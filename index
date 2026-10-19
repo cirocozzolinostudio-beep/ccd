@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCD - Centro Calcolo Dati & Condomini di Cozzolino Ciro </title>
+    <style>
+        /* Reset e Variabili Aziendali */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        :root {
+            --blue-dark: #0b192c;   
+            --blue-light: #1e3e62;  
+            --red: #e63946;         
+            --red-hover: #b81d24;   
+            --yellow: #ffb703;      
+            --light: #f8fafc;
+            --text-dark: #0f172a;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        header {
+            background: rgba(11, 25, 44, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--yellow);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            position: relative;
+        }
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            z-index: 1001;
+        }
+        .logo span { color: var(--red); }
+        
+        /* Menu Desktop */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-menu li {
+            margin-left: 1.5rem;
+        }
+        .nav-menu a {
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            transition: color 0.3s;
+            font-weight: 600;
+            display: block;
+        }
+        .nav-menu a:hover { color: var(--yellow); }
+        
+        /* Pulsante Area Riservata in Navbar */
+        .nav-menu .btn-nav {
+            background: var(--red);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        .nav-menu .btn-nav:hover {
+            background: var(--red-hover);
+            color: white;
+        }
+
+        /* Hamburger Menu Icon (Mobile) */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 1001;
+            padding: 0.5rem;
+        }
+        .bar {
+            display: block;
+            width: 28px;
+            height: 3px;
+            margin: 6px auto;
+            transition: all 0.3s ease-in-out;
+            background-color: #fff;
+            border-radius: 2px;
+        }
+        /* Sezioni Generiche */
+        section {
+            padding: 120px 2rem 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            color: var(--blue-dark);
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--red);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+        .section-subtitle {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            color: #475569;
+            font-size: 1.1rem;
+        }
+
+        /* Hero Section */
+        #home {
+            background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-light) 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            max-width: 100%;
+            padding-top: 80px;
+        }
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+        .hero-content h1 span { color: var(--yellow); }
+        .hero-content p {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            margin-bottom: 2.5rem;
+        }
+        .btn {
+            background: var(--red);
+            color: #fff;
+            padding: 0.85rem 2.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.2s;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);
+        }
+        .btn:hover { 
+            background: var(--red-hover); 
+            transform: translateY(-2px);
+        }
+
+        /* Griglie e Card Generiche */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: transform 0.3s, border-top 0.3s;
+            border-top: 4px solid var(--blue-light);
+        }
+        .card:hover { 
+            transform: translateY(-5px); 
+            border-top: 4px solid var(--red);
+        }
+        .card h3 { 
+            margin-bottom: 1rem; 
+            font-size: 1.4rem;
+            color: var(--blue-dark);
+        }
+
+        /* Pagina Condominio & Login */
+        #condominio {
+            background-color: #f1f5f9;
+            max-width: 100%;
+        }
+        .condo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Blocco Login Condòmini */
+        .login-box {
+            background: var(--blue-dark);
+            color: white;
+            border-radius: 10px;
+            padding: 3rem;
+            margin-top: 4rem;
+            box-shadow: 0 10px 25px rgba(11, 25, 44, 0.2);
+            border-left: 5px solid var(--yellow);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        .login-info h3 {
+            color: var(--yellow);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .login-info p { color: #cbd5e1; }
+        .login-form .form-group label { color: #cbd5e1; }
+        .login-form input {
+            background: #1e293b;
+            border: 1px solid var(--blue-light);
+            color: white;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        .login-form input:focus {
+            border-color: var(--yellow);
+            background: #0f172a;
+            outline: none;
+        }
+
+        /* Pagina Sviluppo Informatica */
+        #programmazione {
+            max-width: 100%;
+        }
+        .prog-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .tech-tag {
+            display: inline-block;
+            background: var(--blue-dark);
+            color: var(--yellow);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            margin-right: 0.5rem;
+        }
+
+        /* Sezione Prezzi */
+        #prezzi {
+            background-color: #f1f5f9;
+            max-width: 100%;
+        }
+        .table-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            overflow-x: auto; 
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th, td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background-color: var(--blue-dark);
+            color: #fff;
+            font-weight: 600;
+        }
+        th:first-child { border-radius: 5px 0 0 0; }
+        th:last-child { border-radius: 0 5px 0 0; color: var(--yellow); }
+        tr:hover { background-color: #f8fafc; }
+        .price-tag {
+            font-weight: bold;
+            color: var(--red);
+            white-space: nowrap;
+        }
+        .category-row {
+            background-color: #e2e8f0;
+            font-weight: bold;
+            color: var(--blue-dark);
+        }
+
+        /* Contatti */
+        #contact {
+            max-width: 100%;
+        }
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .contact-info h3 {
+            color: var(--blue-dark);
+            margin-bottom: 1rem;
+        }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--blue-dark);
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--blue-light);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--blue-dark);
+            color: #94a3b8;
+            text-align: center;
+            padding: 2rem;
+            max-width: 100%;
+            border-top: 4px solid var(--red);
+        }
+
+        /* Responsive Mobile Styles */
+        @media (max-width: 992px) {
+            .login-box {
+                grid-template-columns: 1fr;
+                padding: 2rem;
+                gap: 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.3rem; }
+            .hamburger { display: block; }
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                flex-direction: column;
+                background-color: var(--blue-dark);
+                width: 100%;
+                height: 100vh;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+                justify-content: center;
+                padding: 2rem;
+            }
+            .nav-menu.active { left: 0; }
+            .nav-menu li { margin: 1.5rem 0; margin-left: 0; }
+            .nav-menu a { font-size: 1.5rem; }
+            .nav-menu .btn-nav { background: transparent; color: #cbd5e1; padding: 0; }
+            .nav-menu .btn-nav:hover { background: transparent; color: var(--yellow); }
+            .hamburger.active .bar:nth-child(2) { opacity: 0; }
+            .hamburger.active .bar:nth-child(1) { transform: translateY(9px) rotate(45deg); background-color: var(--red); }
+            .hamburger.active .bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); background-color: var(--red); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">C<span>CC</span></div>
+            
+            <button class="hamburger" aria-label="Menu di navigazione">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#condominio">Amministrazione</a></li>
+                    <li><a href="#programmazione">Sviluppo Software</a></li>
+                    <li><a href="#prezzi">Tariffe</a></li>
+                    <li><a href="#contact">Contatti</a></li>
+                    <li><a href="#area-riservata" class="btn-nav">Area Riservata</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home">
+        <div class="hero-content">
+            <h1>Ciro <span>Cozzolino</span></h1>
+            <p>Amministrazione Condominiale d'Avanguardia e Sviluppo di Applicativi Informatici per il Controllo di Gestione e Contabilità.</p>
+            <a href="#contact" class="btn">Richiedi un Preventivo</a>
+        </div>
+    </section>
+
+    <section id="condominio">
+        <div class="condo-container">
+            <h2 class="section-title">Amministrazione Condominiale</h2>
+            <p class="section-subtitle">Gestione immobiliare trasparente, efficiente e conforme alle normative vigenti. Ciro Cozzolino mette al servizio dei condomini precisione millimetrica e reperibilità costante.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>Contabilità Chiara & Trasparente</h3>
+                    <p>Rendiconti preventivi e consuntivi strutturati in modo semplice e accessibile. Ogni spesa è tracciata e documentata per la massima tranquillità dei condòmini.</p>
+                </div>
+                <div class="card">
+                    <h3>Gestione Fornitori & Interventi</h3>
+                    <p>Coordinamento rapido di ditte qualificate per manutenzioni ordinarie e straordinarie, garantendo il miglior rapporto qualità-prezzo sul mercato.</p>
+                </div>
+                <div class="card">
+                    <h3>Mediazione & Aspetti Legali</h3>
+                    <p>Risoluzione tempestiva delle controversie interne e rigoroso rispetto del regolamento condominiale e delle scadenze fiscali.</p>
+                </div>
+            </div>
+
+            <div class="login-box" id="area-riservata">
+                <div class="login-info">
+                    <h3>Bacheca Digitale Condòmini</h3>
+                    <p>Accedi all'area riservata del tuo stabile per consultare in tempo reale i verbali d'assemblea, le fatture dei fornitori, le scadenze delle rate e la situazione contabile aggiornata del tuo condominio.</p>
+                </div>
+                <div class="login-form">
+                    <form onsubmit="event.preventDefault(); alert('Accesso effettuato! Reindirizzamento alla bacheca condominiale...');">
+                        <div class="form-group">
+                            <label for="condo-code">Codice Condominio</label>
+                            <input type="text" id="condo-code" placeholder="Es. COND-104" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="condo-email">Email Associata</label>
+                            <input type="email" id="condo-email" placeholder="nome@esempio.it" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 2rem;">
+                            <label for="condo-pass">Password</label>
+                            <input type="password" id="condo-pass" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%; background: var(--yellow); color: var(--blue-dark);">Accedi al Portale</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="programmazione">
+        <div class="prog-container">
+            <h2 class="section-title">Soluzioni Software & Contabilità</h2>
+            <p class="section-subtitle">Sviluppo di applicativi informatici su misura per ottimizzare i processi contabili, l'analisi dei flussi finanziari e la gestione automatizzata dei dati fiscali.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>Sviluppo Applicativi su Misura</h3>
+                    <p>Progettazione di software personalizzati per superare i limiti dei fogli di calcolo tradizionali. Automazione completa dei flussi di lavoro amministrativi.</p>
+                    <span class="tech-tag">Python</span><span class="tech-tag">C#</span><span class="tech-tag">SQL</span>
+                </div>
+                <div class="card">
+                    <h3>Integrazione Sistemi Contabili</h3>
+                    <p>Creazione di database relazionali avanzati e script capaci di dialogare con i principali software fiscali, riducendo a zero l'errore umano di inserimento.</p>
+                    <span class="tech-tag">REST API</span><span class="tech-tag">PostgreSQL</span>
+                </div>
+                <div class="card">
+                    <h3>Business Intelligence Contabile</h3>
+                    <p>Sviluppo di dashboard interattive per il monitoraggio in tempo reale di entrate, uscite, scadenze e previsioni di cassa aziendali o condominiali.</p>
+                    <span class="tech-tag">Power BI</span><span class="tech-tag">Excel Macro</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="prezzi">
+        <div class="table-container">
+            <h2 class="section-title">Tariffe e Soluzioni</h2>
+            <p class="section-subtitle">Listino prezzi indicativo per i servizi professionali di amministrazione e sviluppo IT. Ogni progetto può essere personalizzato sulla base delle specifiche esigenze.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Servizio / Soluzione</th>
+                        <th>Descrizione Dettagliata</th>
+                        <th>Prezzo Indicativo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="category-row">
+                        <td colspan="3">AMMINISTRAZIONE CONDOMINIALE</td>
+                    </tr>
+                    <tr>
+                        <td>Condominio Minimo (fino a 8 unità)</td>
+                        <td>Gestione contabile ordinaria, bacheca digitale attiva e 1 assemblea annuale inclusa.</td>
+                        <td class="price-tag">da € 90,00 mensili</td>
+                    </tr>
+                    <tr>
+                        <td>Condominio Medio (9 - 15 unità)</td>
+                        <td>Gestione ordinaria, bacheca, ripartizione consumi e reperibilità telefonica d'emergenza.</td>
+                        <td class="price-tag">incremento fino a € 180,00 mensili</td>
+                    </tr>
+		    <tr>
+                        <td>Condominio Medio - Grande (16 - 29 unità)</td>
+                        <td>Gestione ordinaria, bacheca, ripartizione consumi e reperibilità telefonica d'emergenza.</td>
+                        <td class="price-tag">incremento fino a € 500,00 mensili</td>
+                    </tr>
+		    <tr>
+                        <td>Condominio Grande (30 - 50 unità)</td>
+                        <td>Gestione ordinaria, bacheca, ripartizione consumi e reperibilità telefonica d'emergenza.</td>
+                        <td class="price-tag">incremento fino a € 1000,00 mensili</td>
+                    </tr>
+                    <tr>
+                        <td>Grandi Complessi (+30 unità)</td>
+                        <td>Servizio full-service, audit contabile iniziale e coordinamento custodi/servizi interni.</td>
+                        <td class="price-tag">Su Preventivo</td>
+                    </tr>
+                    <tr class="category-row">
+                        <td colspan="3">SVILUPPO SOFTWARE & AUTOMAZIONE CONTABILE</td>
+                    </tr>
+                    <tr>
+                        <td>Script di Automazione Dati</td>
+                        <td>Sincronizzazione automatica tra database aziendali esterni e gestionali contabili.</td>
+                        <td class="price-tag">da € 350 una tantum</td>
+                    </tr>
+                    <tr>
+                        <td>Dashboard Business Intelligence</td>
+                        <td>Creazione di pannelli di controllo interattivi (Power BI/Excel) per monitoraggio flussi di cassa.</td>
+                        <td class="price-tag">da € 600 una tantum</td>
+                    </tr>
+                    <tr>
+                        <td>Applicativo Gestionale su Misura</td>
+                        <td>Software gestionale completo scritto in Python/C# con database SQL dedicato e multi-utente.</td>
+                        <td class="price-tag">da € 1.500 una tantum</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="contact-container">
+            <div class="contact-info">
+                            <div class="contact-info">
+                <h3>Un professionista?</h3>
+                <p style="margin: 1rem 0 2rem; color: #475569;">Sia che stia cercando un nuovo amministratore per il tuo condominio, sia che abbia deciso di automatizzare la contabilità dell'azienda, prenoti un colloquio conoscitivo.</p>
+                
+                <!-- Collegamento WhatsApp con Icona SVG -->
+                <p style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                    <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="background: #e8fced; padding: 4px; border-radius: 50%; box-content: content-box;">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                    <a href="https://wa.me" target="_blank" style="color: #25D366; text-decoration: none; font-weight: bold; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Per un primo incontro con WhatsApp</a>
+                </p>
+
+                <p style="margin-bottom: 0.5rem;"><strong>Email:</strong> cirocozzolino.studio@gmail.com</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Telefono:</strong> +39 3406342053</p>
+                <p><strong>Studio Privato:</strong> Corso Umberto I N. 425 Marigliano Napoli </p>
+            </div>
+
+            <form onsubmit="event.preventDefault(); alert('Grazie per averci contattato. Risponderemo al più presto.');">
+                <div class="form-group">
+                    <label for="name">Nome / Condominio / Azienda</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email di Contatto</label>
+                    <input type="email" id="email" required>
+                </div>
